@@ -1,0 +1,35 @@
+{
+  "_comment": "Heuristic first-party code patterns that make a vulnerable package reachable. A match means 'look closer', no match means 'not obviously used', never proof either way. Extend freely.",
+  "npm": {
+    "handlebars": {"patterns": ["\\.compile\\(", "\\.precompile\\(", "Handlebars\\.template\\("], "note": "Template-injection CVEs need an attacker-controlled template or AST passed to compile/precompile; pre-compiled static templates are not exposed."},
+    "lodash": {"patterns": ["\\.template\\(", "\\bmerge\\(", "mergeWith\\(", "defaultsDeep\\(", "\\bset\\(", "setWith\\(", "zipObjectDeep\\("], "note": "Prototype pollution needs attacker-controlled keys in merge/set paths; template() needs attacker-controlled template or options."},
+    "minimist": {"patterns": ["minimist\\("], "note": "Prototype pollution when parsing attacker-controlled argv/strings."},
+    "xml2js": {"patterns": ["parseString", "parseStringPromise", "new .*Parser\\("], "note": "Prototype pollution when parsing untrusted XML."},
+    "jsonwebtoken": {"patterns": ["\\.verify\\(", "\\.sign\\(", "\\.decode\\("], "note": "Algorithm-confusion and key-type issues depend on how verify() is called."},
+    "jws": {"patterns": ["\\.verify\\(", "\\.sign\\("], "note": "Same exposure as jsonwebtoken."},
+    "axios": {"patterns": ["axios\\.", "axios\\("], "note": "SSRF / credential leakage depends on attacker-influenced URLs, redirects or headers."},
+    "express": {"patterns": ["express\\("], "note": "Check the specific advisory: many affect only particular middleware or query parsing."},
+    "body-parser": {"patterns": ["bodyParser", "body-parser"], "note": "DoS issues apply to services accepting untrusted request bodies."},
+    "qs": {"patterns": ["qs\\.parse", "require\\(['\\\"]qs['\\\"]\\)"], "note": "Prototype pollution / DoS when parsing attacker-controlled query strings."},
+    "serialize-javascript": {"patterns": ["serialize\\("], "note": "XSS/RCE when serializing attacker-controlled objects."},
+    "node-forge": {"patterns": ["forge\\."], "note": "Signature verification issues matter only if you verify certs/signatures with forge."},
+    "path-to-regexp": {"patterns": ["pathToRegexp", "path-to-regexp"], "note": "ReDoS applies when route patterns are attacker-controlled."},
+    "semver": {"patterns": ["semver\\.", "satisfies\\(", "valid\\("], "note": "ReDoS applies when untrusted version strings are parsed."},
+    "tar": {"patterns": ["tar\\.x", "tar\\.extract", "tar\\.c"], "note": "Path traversal when extracting untrusted archives."},
+    "@sap/cds": {"patterns": ["cds\\.", "require\\(['\\\"]@sap/cds['\\\"]\\)"], "note": "CAP runtime: always treat as reachable; follow the SAP security note."}
+  },
+  "maven": {
+    "org.apache.logging.log4j:log4j-core": {"patterns": ["LogManager", "Logger", "log4j2"], "note": "JNDI/lookup issues depend on attacker-controlled data reaching log messages or patterns."},
+    "com.fasterxml.jackson.core:jackson-databind": {"patterns": ["ObjectMapper", "enableDefaultTyping", "activateDefaultTyping", "readValue"], "note": "Deserialization gadget CVEs need polymorphic typing on untrusted JSON; DoS CVEs need untrusted JSON."},
+    "org.yaml:snakeyaml": {"patterns": ["new Yaml\\(", "Yaml\\.load", "\\.loadAs\\("], "note": "Unsafe constructors on untrusted YAML are the exposure; in Spring Boot only application.yaml is usually parsed."},
+    "com.thoughtworks.xstream:xstream": {"patterns": ["XStream", "fromXML"], "note": "Needs untrusted XML and a permissive security framework."},
+    "org.apache.commons:commons-text": {"patterns": ["StringSubstitutor", "StringLookup"], "note": "Needs attacker-controlled input into substitutors with interpolation enabled."},
+    "com.h2database:h2": {"patterns": ["jdbc:h2", "h2-console", "h2\\.console"], "note": "Console/JNDI issues apply when the H2 console or untrusted JDBC URLs are exposed. Often test/dev scope only."},
+    "org.apache.tomcat.embed:tomcat-embed-core": {"patterns": ["spring-boot-starter-web", "server\\.tomcat"], "note": "Embedded Tomcat is on the request path of every Spring Boot web app: treat as reachable."},
+    "org.springframework:spring-web": {"patterns": ["@RestController", "RestTemplate", "@RequestMapping"], "note": "Check advisory preconditions (e.g. specific handlers or Java version)."},
+    "org.springframework:spring-webmvc": {"patterns": ["@RestController", "@Controller", "@RequestMapping"], "note": "Check advisory preconditions."},
+    "ch.qos.logback:logback-core": {"patterns": ["logback", "LoggerFactory"], "note": "Config-injection issues need attacker-writable logback.xml."},
+    "org.postgresql:postgresql": {"patterns": ["jdbc:postgresql", "PGConnection"], "note": "JDBC URL / connection-property issues need attacker-influenced connection strings."},
+    "com.sap.cds:cds-services-api": {"patterns": ["com\\.sap\\.cds"], "note": "CAP Java runtime: always reachable; follow the SAP security note."}
+  }
+}

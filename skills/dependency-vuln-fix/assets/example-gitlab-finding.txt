@@ -1,0 +1,48 @@
+btp
+my-cap-app
+Vulnerability Report
+403050401
+Handlebars: JavaScript Injection via AST Type Confusion in compile (bypass of CVE-2026-33937)
+Detected
+1 month ago
+in pipeline
+2431599979
+Branchdevelop
+Risk
+CVSS score
+v3.1:9.8
+EPSS
+1%
+KEV listed
+No
+Reachability
+Not available
+Remediation
+Upgrade to version 4.7.10 or above.
+
+Details
+Properties
+Report type
+Dependency Scanning
+Scanner
+Gemnasium
+Project
+my-group / my-subgroup / my-cap-app
+File
+package-lock.json
+Description
+Handlebars.compile() and Handlebars.precompile() accept a pre-parsed AST as well as a template string.
+If an application passes an untrusted object to compile() or precompile(), that object can carry arbitrary JavaScript.
+
+Supplementary information
+Identifiers
+CWE-1035
+CWE-94
+CVE-2026-106446
+GHSA-8r5x-fm3f-whwj
+Links
+https://github.com/advisories/GHSA-8r5x-fm3f-whwj
+https://github.com/handlebars-lang/handlebars.js/releases/tag/v4.7.10
+Evidence
+Vulnerable Package
+handlebars:4.7.9
